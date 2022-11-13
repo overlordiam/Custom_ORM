@@ -1,5 +1,5 @@
 import sqlite3
-
+import json
 
 class Controller:
     con = None
@@ -34,17 +34,19 @@ class Controller:
         Implements the select equivalent of SQL
         """
         fields_format = ",".join(fields)
-        query = f"SELECT {fields_format} from {self.model_class.table_name}"
+        query = f"SELECT {fields_format} FROM {self.model_class.table_name}"
         cursor = self._get_cursor()
         cursor.execute(query)
 
         model_objects = []
-        result = cursor.fetchmany(size=30)
+        # result = cursor.fetchmany(size=30)
         for row_values in cursor.execute(query):
             # print(fields, row_values)
             keys, values = fields, row_values
             row_data = dict(zip(keys, values))
+            # print(row_data)
             model_objects.append(self.model_class(**row_data))
+            # print(model_objects)
         return model_objects
 
     def insert(self, rows):
@@ -59,6 +61,8 @@ class Controller:
         for row in rows:
             row_values = [row[field_name] for field_name in field_names]
             self._execute_query(query, row_values)
+        
+        self.con.commit()
 
     def update(self, data):
         field_names = data.keys()
@@ -68,9 +72,15 @@ class Controller:
         params = tuple(data.values())
         self._execute_query(query, params)
 
+        self.con.commit()
+
+
     def delete(self):
         query = f"DELETE FROM {self.model_class.table_name}"
         self._execute_query(query)
+
+        self.con.commit()
+
 
 
 class MetaModel(type):
@@ -98,8 +108,13 @@ class Display(metaclass=MetaModel):
         """
         Prints out the results of the query executions in command line
         """
-        attrs_format = ", ".join([f'{field}={value}' for field, value in self.__dict__.items()])
-        return f"{self.__class__.__name__}: ({attrs_format})\n"
+        # attrs_format = {{f"{field}":f"{value}" for field, value in self.__dict__.items()}}
+        # return attrs_format
+        # return f"{self.__class__.__name__}: ({attrs_format})\n"
+        dic = dict()
+        for keys, values in self.__dict__.items():
+            dic.update({f"{keys}":f"{values}"})
+        return f"({dic})"
 
 
 class Products(Display):
