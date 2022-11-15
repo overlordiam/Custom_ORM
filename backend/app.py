@@ -1,5 +1,4 @@
 import sqlite3
-import json
 
 class Controller:
     con = None
@@ -130,9 +129,7 @@ class Display(metaclass=MetaModel):
         """
         Prints out the results of the query executions in command line
         """
-        # attrs_format = {{f"{field}":f"{value}" for field, value in self.__dict__.items()}}
-        # return attrs_format
-        # return f"{self.__class__.__name__}: ({attrs_format})\n"
+     
         dic = dict()
         for keys, values in self.__dict__.items():
             dic.update({f"{keys}":f"{values}"})

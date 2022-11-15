@@ -21,7 +21,7 @@ def update():
 
 def delete():
     Controller.connectToDB(database_name="APP.db")
-    Orders.objects.delete()
+    Users.objects.delete()
     return "ok"
 
 def test_select():
@@ -35,16 +35,5 @@ def test_update():
 
 def test_delete():
     delete()
-    assert len(Orders.objects.select("id")) == 0
+    assert len(Users.objects.select("id")) == 0
 
-
-    
-
-
-
-
-
-if __name__ == '__main__':
-    test = ApiTest()
-    test.check_insertion()
-    # unittest.main()

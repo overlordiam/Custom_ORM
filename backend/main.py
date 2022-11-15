@@ -6,21 +6,16 @@ if __name__ == '__main__':
     Controller.connectToDB(database_name="APP.db")
 
     # PutProductsInDatabase(getDataFromAPI("https://dummyjson.com/", "products"))
-    # getProducts()
-    # PutProductsInDatabase(getDataFromAPI("https://dummyjson.com/", "products"))
-
     # products = Products.objects.select("id", "title")
     # print(products)
     # PutUsersInDatabase(getDataFromAPI("https://dummyjson.com/", "users"))
     # Users.objects.insert(getDataFromAPI("https://dummyjson.com/", "users"))
     # Users.objects.delete()
-    # Users.objects.insert([{"id":"111","firstName":"suhaas","lastName":"gum","age":"20","gender":"male","email":"fnefnejf"}])
     users = Users.objects.select("id", "firstName", "age")
     print(users)
 
 
-    # getUsers()
-    PutOrdersInDatabase(getDataFromAPI("https://dummyjson.com/", "carts"))
+    # PutOrdersInDatabase(getDataFromAPI("https://dummyjson.com/", "carts"))
     # print(users)
     # Orders.objects.delete()
     # Orders.objects.insert([{'id': '100', 'userId': '100', 'productId': '100'}])
@@ -29,9 +24,5 @@ if __name__ == '__main__':
     # })
     # orders = Orders.objects.select("id", "userId", "productId", "quantity", "total")
     # print(orders)
-    # print(getDataFromAPI("https://dummyjson.com/", "products")[0])
-    # products = Products.objects.select("id", "title", "description")
-    # print(products)
-    # app.run(host='0.0.0.0', port=port)
     
 
