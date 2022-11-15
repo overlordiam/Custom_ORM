@@ -47,11 +47,15 @@ class Controller:
             # print(row_data)
             model_objects.append(self.model_class(**row_data))
             # print(model_objects)
+        cursor.close()
+
         return model_objects
 
     def insert(self, rows):
         field_names = rows[0].keys()
         assert all(row.keys() == field_names for row in rows[1:])
+        cursor = self._get_cursor()
+
 
         field_format = ", ".join(field_names)
         value_format = ", ".join([f'({", ".join("?" * len(field_names))})'])
@@ -60,27 +64,45 @@ class Controller:
 
         for row in rows:
             row_values = [row[field_name] for field_name in field_names]
-            self._execute_query(query, row_values)
-        
-        self.con.commit()
+            cursor.execute(query, row_values)
 
-    def update(self, data):
+        self.con.commit()
+        cursor.close()
+        return "none"
+
+
+    def update(self, data: dict):
         field_names = data.keys()
         placeholder = ", ".join([f"{field_name}=?" for field_name in field_names])
         query = f"UPDATE {self.model_class.table_name} SET {placeholder}"
 
         params = tuple(data.values())
-        self._execute_query(query, params)
+        cursor = self._get_cursor()
+
+        cursor.execute(query, params)
 
         self.con.commit()
+        cursor.close()
+
+        return "none"
 
 
-    def delete(self):
-        query = f"DELETE FROM {self.model_class.table_name}"
-        self._execute_query(query)
+    def delete(self, id=None):
+
+        cursor = self._get_cursor()
+
+        if id is not None:
+             query = f"DELETE FROM {self.model_class.table_name} WHERE id=?"
+             cursor.execute(query, id)
+
+        else:
+            query = f"DELETE FROM {self.model_class.table_name}"
+            cursor.execute(query)
 
         self.con.commit()
+        cursor.close()
 
+        return "none"
 
 
 class MetaModel(type):

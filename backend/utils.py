@@ -43,9 +43,9 @@ def getDataFromAPI(api, category):
 
 
 def PutProductsInDatabase(data):
-    con = sqlite3.connect("APP2.db")
+    con = sqlite3.connect("APP.db")
     cur = con.cursor()
-    cur.execute("DROP TABLE products")
+    # cur.execute("DROP TABLE products")
     res = cur.execute("SELECT name FROM sqlite_master WHERE name='products'")
     if res.fetchone() is None:
         cur.execute("CREATE TABLE products(id,title,description,price,brand,"
@@ -59,14 +59,14 @@ def PutProductsInDatabase(data):
 
 
 def PutUsersInDatabase(data):
-    con = sqlite3.connect("APP2.db")
+    con = sqlite3.connect("APP.db")
     cur = con.cursor()
     # cur.execute("DELETE FROM users")
     field_names = ["id", "firstName", "lastName", "age", "gender", "email"]
     # cur.execute("DROP TABLE users")
     res = cur.execute("SELECT name FROM sqlite_master WHERE name='users'")
     if res.fetchone() is None:
-        cur.execute("CREATE TABLE users(id, firstName, lastName, age, gender, email)")
+        cur.execute("CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT, firstName, lastName, age, gender, email)")
     for row in data:
         values = list()
         values += [row[field_name] for field_name in field_names]
@@ -75,13 +75,13 @@ def PutUsersInDatabase(data):
 
 
 def PutOrdersInDatabase(data):
-    con = sqlite3.connect("APP2.db")
+    con = sqlite3.connect("APP.db")
     cur = con.cursor()
     # cur.execute("DROP TABLE orders")
     field_names = ["id", "userId", "productId", "quantity", "total"]
     res = cur.execute("SELECT name FROM sqlite_master WHERE name='orders'")
     if res.fetchone() is None:
-        cur.execute("CREATE TABLE orders(id int auto_increment primary key, userId, productId, quantity, total)")
+        cur.execute("CREATE TABLE orders(id INTEGER PRIMARY KEY AUTOINCREMENT, userId , productId, quantity, total, FOREIGN KEY (userId) REFERENCES users (userId), FOREIGN KEY (productId) REFERENCES products (productId))")
     for row in data:
         values = list()
         values += [row[field_name] for field_name in field_names]
@@ -90,13 +90,13 @@ def PutOrdersInDatabase(data):
 
 
 def getProducts():
-    con = sqlite3.connect("APP2.db")
+    con = sqlite3.connect("APP.db")
     cur = con.cursor()
     for row in cur.execute("SELECT * FROM products"):
         print(row)
 
 def getUsers():
-    con = sqlite3.connect("APP2.db")
+    con = sqlite3.connect("APP.db")
     cur = con.cursor()
     for row in cur.execute("SELECT * FROM users"):
         print(row)
