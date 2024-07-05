@@ -31,6 +31,7 @@ This is a Flask-based backend application for an e-commerce website. The applica
    ```bash
    git clone https://github.com/overlordiam/Custom_ORM.git
    cd Custom_ORM
+   ```
 
 2. Create and activate a virtual environment (optional but recommended):
 
@@ -40,6 +41,7 @@ This is a Flask-based backend application for an e-commerce website. The applica
    venv\Scripts\activate
    # On macOS and Linux
    source venv/bin/activate
+   ```
 
 ## Usage
 
@@ -47,7 +49,8 @@ This is a Flask-based backend application for an e-commerce website. The applica
      
      ```bash
      python main.py
-      
+     ```
+
   2. Access the endpoints using a web client or API client like Postman.
 
 ## Endpoints
@@ -89,6 +92,7 @@ This is a Flask-based backend application for an e-commerce website. The applica
   
     ```bash
     python All_test.py
+    ```
 
 ## Database
 
